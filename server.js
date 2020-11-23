@@ -1,10 +1,13 @@
 const ronin     = require( 'ronin-server' )
 const mocks     = require( 'ronin-mocks' )
-const database  = require( 'ronin-database' )
  
-const server = ronin.server()
+async function main() {
+  const server = await ronin.server()
 
-database.connect( process.env.CONNECTIONSTRING )
+  server.use( '/api/', mocks.server( server.Router(), false, true ) )
+  server.start()
 
-server.use( '/', mocks.server( server.Router(), false, false ) )
-server.start()
+  console.log( "ronin server listening on http://localhost:8000/api/" )
+}
+
+main()
